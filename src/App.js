@@ -2,6 +2,7 @@ import './App.css';
 import {useEffect, useState} from "react";
 import Product from "./Components/Product";
 import MenuBar from "./Components/MenuBar";
+import LogInWindow from "./Components/LogInWindow";
 
 function App() {
 
@@ -104,7 +105,7 @@ function App() {
         price: 'price',
       };
       const sortProperty = types[type];
-      let sorted = "";
+      let sorted;
 
       if (sortProperty !== "name"){
         sorted = [...products].sort((a, b) => a[sortProperty] - b[sortProperty]);
@@ -119,6 +120,7 @@ function App() {
 
   return (
     <div className="App">
+      <LogInWindow/>
       <MenuBar search={filtered} sorting={sorted}/>
       <div className="products">
         {data.filter(product => product.name.includes(filter)).map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}

@@ -7,7 +7,8 @@ const MenuBar = ({search, sorting}) => {
         <div style={{
             display: "flex",
             justifyContent: "flex-start",
-            margin: "35px",
+            flexWrap: "wrap",
+            padding: "0 45px",
             gap: "50px"
         }}>
             <SearchBar searchBox={search}/>

@@ -9,7 +9,7 @@ const SortBox = ({sortBox}) => {
             <select style={{
                 width: "100%",
                 padding: "10px",
-                borderRadius: "5px"
+                borderRadius: "20px"
             }} onChange={(event) => {
                 sortBox(event.target.value)
             }}>

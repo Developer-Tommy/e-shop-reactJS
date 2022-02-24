@@ -9,7 +9,7 @@ const Product = ({product, addProduct, addBookmark}) => {
             display: "flex",
             flexDirection: "column",
             border: "1px solid black",
-            padding: "15px",
+            padding: "20px",
             flexBasis: "30%",
             textAlign: "center",
             justifyContent: "center",
@@ -25,14 +25,21 @@ const Product = ({product, addProduct, addBookmark}) => {
                 addBookmark(product)
             }} />
             <img src={product.src} alt={product.name} width={150} height={150}/>
-            <h3>{product.name}</h3>
-            <p>{product.price+"$"}</p>
+            <h3 style={{
+                marginBottom: "5px"
+            }}>{product.name}</h3>
+            <p style={{
+                marginTop: "5px"
+            }}>{product.price+"$"}</p>
             <button style={{
                 width: "55%",
-                padding: "20px",
+                padding: "10px",
                 display: "inline-block",
-                borderRadius: "5px",
+                borderRadius: "20px",
                 cursor: "pointer",
+                backgroundColor: "black",
+                color: "white",
+                fontSize: "1rem"
             }} onClick={() => {
                 addProduct(product)
             }} >Buy</button>
