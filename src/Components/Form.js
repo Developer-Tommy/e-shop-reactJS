@@ -1,12 +1,17 @@
 import React, {useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
+import {useNavigate} from "react-router";
 
-const Form = ({handleClose}) => {
+
+const Form = ({handleClose, addCustomer, logIn}) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isBackgroundGreen, setIsBackgroundGreen] = useState(false);
     const [passwordText, setPasswordText] = useState('');
+    const [customer, setCustomer] = useState({username: "user"});
+
+    let history = useNavigate();
 
     const handlePassword = (tmpPassword) => {
         let strongPassword = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
@@ -26,9 +31,22 @@ const Form = ({handleClose}) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(username, password);
+        history("/cart");
         handleClose();
     };
+
+    const handleLogInCustomers = () => {
+        console.log(username, password);
+        let updatedVal = {};
+        updatedVal = {username: {username}, password: {password}};
+        setCustomer(customer => ({
+            ...customer,
+            ...updatedVal
+        }));
+        console.log(customer);
+        addCustomer(customer);
+        logIn(true);
+    }
 
     return (
         <form style={{
@@ -84,7 +102,7 @@ const Form = ({handleClose}) => {
                 }} variant="contained" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button style={{
+                <Button onClick={handleLogInCustomers} style={{
                     margin: "20px",
                     backgroundColor: "black",
                     color: "white"

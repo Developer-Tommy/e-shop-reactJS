@@ -1,8 +1,12 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import Product from "./Components/Product";
 import MenuBar from "./Components/MenuBar";
 import LogInWindow from "./Components/LogInWindow";
+import {BrowserRouter, Route} from "react-router-dom";
+import {Routes} from "react-router";
+import ProductInCart from "./Components/ProductInCart";
+import ProfileButtons from "./Components/ProfileButtons";
 
 function App() {
 
@@ -11,6 +15,8 @@ function App() {
   const [bookmark, setBookmark] = useState([]);
   const [sort, setSort] = useState("");
   const [data, setData] = useState([]);
+  const [customer, setCustomer] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const products = [
     {
@@ -97,6 +103,32 @@ function App() {
     setSort(value);
   }
 
+  const addCustomer = (user) => {
+    const tmpCustomer = [...customer];
+    tmpCustomer.push(user);
+    console.log("pridany");
+    console.log(customer)
+    setCustomer(tmpCustomer);
+  }
+
+  const removeProductFromCart = (product) => {
+    const tmpCart = [...cart];
+    console.log(product)
+    setCart(tmpCart.filter(({ id }) => id !== product));
+    console.log(cart)
+  }
+
+  const removeProductFromBookmarks = (product) => {
+    const tmpBookmark = [...bookmark];
+    setBookmark(tmpBookmark.filter(({ id }) => id !== product));
+    console.log(bookmark)
+  }
+
+  const handleLogIn = (value) => {
+    setIsLoggedIn(value);
+    console.log(isLoggedIn);
+  }
+
   useEffect(() => {
     const sortArray = type => {
       const types = {
@@ -120,12 +152,41 @@ function App() {
 
   return (
     <div className="App">
-      <LogInWindow/>
-      <MenuBar search={filtered} sorting={sorted}/>
-      <div className="products">
-        {data.filter(product => product.name.includes(filter)).map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}
-        {/*{data.map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}*/}
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <div>
+              <LogInWindow logIn={handleLogIn} addCustomers={addCustomer}/>
+              <MenuBar search={filtered} sorting={sorted}/>
+              <div className="products">
+                {data.filter(product => product.name.includes(filter)).map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}
+                {/*{data.map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}*/}
+              </div>
+            </div>}>
+          </Route>
+          <Route path="/cart" element={
+            <div>
+              <LogInWindow logIn={handleLogIn} addCustomers={addCustomer}/>
+              <MenuBar search={filtered} sorting={sorted}/>
+              <ProfileButtons/>
+              <div className="products">
+                {cart.filter(product => product.name.includes(filter)).map(item => <ProductInCart key={item.id} product={item} removeFromCart={removeProductFromCart} removeBookmark={removeProductFromBookmarks}/>)}
+              </div>
+            </div>}>
+          </Route>
+          <Route path="/bookmark" element={
+            <div>
+              <LogInWindow logIn={handleLogIn} addCustomers={addCustomer}/>
+              <MenuBar search={filtered} sorting={sorted}/>
+              <ProfileButtons/>
+              <div className="products">
+                {bookmark.filter(product => product.name.includes(filter)).map(item => <ProductInCart key={item.id} product={item} removeFromCart={removeProductFromCart} removeBookmark={removeProductFromBookmarks}/>)}
+              </div>
+            </div>}>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+
     </div>
   );
 }

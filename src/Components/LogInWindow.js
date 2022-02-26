@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCircleUser} from '@fortawesome/free-solid-svg-icons'
 import DialogWindow from "./DialogWindow";
+import {useNavigate} from "react-router";
 
-const LogInWindow = () => {
+const LogInWindow = ({addCustomers, logIn}) => {
 
     const [open, setOpen] = useState(false);
+
+    let redirect = useNavigate();
 
     const handleToOpen = () => {
         setOpen(true);
@@ -17,13 +20,17 @@ const LogInWindow = () => {
 
     return (
         <div style={{
-            position: "relative"
+            position: "relative",
+            marginBottom: "20px"
         }}>
             <h1 style={{
                 margin: "0",
                 padding: "40px",
                 backgroundColor: "black",
-                color: "white"
+                color: "white",
+                cursor: "pointer"
+            }} onClick={() => {
+                redirect("/");
             }}>E-shop MobileShop</h1>
 
             <FontAwesomeIcon className="logedUser" style={{
@@ -34,7 +41,7 @@ const LogInWindow = () => {
                 color: "white",
                 cursor: "pointer"
             }} icon={faCircleUser} onClick={handleToOpen}/>
-            <DialogWindow open={open} handleClose={handleToClose}/>
+            <DialogWindow open={open} logIn={logIn} addCustomers={addCustomers} handleClose={handleToClose}/>
         </div>
     );
 };
