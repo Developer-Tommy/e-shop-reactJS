@@ -1,9 +1,8 @@
-import './StyleProduct.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import React from 'react';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faHeart} from "@fortawesome/free-solid-svg-icons";
 
-const ProductInCart = ({product, removeFromCart ,addToBookmark}) => {
-
+const ProductInBookmark = ({product, addToCart, removeFromBookmark}) => {
 
     return (
         <div style={{
@@ -24,7 +23,7 @@ const ProductInCart = ({product, removeFromCart ,addToBookmark}) => {
             <FontAwesomeIcon className="heart" style={{
 
             }} icon={faHeart} onClick={() => {
-                addToBookmark(product)
+                removeFromBookmark(product.id)
             }} />
             <img src={product.src} alt={product.name} width={150} height={150}/>
             <h3 style={{
@@ -46,10 +45,10 @@ const ProductInCart = ({product, removeFromCart ,addToBookmark}) => {
                 color: "white",
                 fontSize: "1rem"
             }} onClick={() => {
-                removeFromCart(product.id);
-            }} >Remove</button>
+                addToCart(product);
+            }} >Buy</button>
         </div>
     );
 };
 
-export default ProductInCart;
+export default ProductInBookmark;

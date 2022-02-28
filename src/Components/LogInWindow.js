@@ -1,17 +1,24 @@
 import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCircleUser} from '@fortawesome/free-solid-svg-icons'
+import {faCircleUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import DialogWindow from "./DialogWindow";
 import {useNavigate} from "react-router";
+import {Dialog} from "@material-ui/core";
 
-const LogInWindow = ({addCustomers, logIn}) => {
+const LogInWindow = ({addCustomers, logIn, logInVal}) => {
 
     const [open, setOpen] = useState(false);
 
     let redirect = useNavigate();
 
     const handleToOpen = () => {
-        setOpen(true);
+        if (logInVal === false)
+            setOpen(true);
+        else {
+            logIn(false)
+            redirect("/")
+            alert("You have been logged out.");
+        }
     };
 
     const handleToClose = () => {
@@ -33,15 +40,23 @@ const LogInWindow = ({addCustomers, logIn}) => {
                 redirect("/");
             }}>E-shop MobileShop</h1>
 
-            <FontAwesomeIcon className="logedUser" style={{
+            <FontAwesomeIcon title={(logInVal === false) ? "Log-in" : "Log-out"} className="logedUser" style={{
                 position: "absolute",
                 top: "30%",
                 right: "50px",
-                fontSize: "3rem",
+                fontSize: "2rem",
                 color: "white",
                 cursor: "pointer"
             }} icon={faCircleUser} onClick={handleToOpen}/>
-            <DialogWindow open={open} logIn={logIn} addCustomers={addCustomers} handleClose={handleToClose}/>
+            {(logInVal === true) ? <FontAwesomeIcon className="logedUser" style={{
+                position: "absolute",
+                top: "30%",
+                right: "100px",
+                fontSize: "2rem",
+                color: "white",
+                cursor: "pointer"
+            }} icon={faCartShopping} onClick={() => {redirect("/cart")}}/> : ""}
+            <DialogWindow open={open} logIn={logIn} isLogged={logInVal} addCustomers={addCustomers} handleClose={handleToClose}/>
         </div>
     );
 };
