@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCircleUser, faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import DialogWindow from "./DialogWindow";
 import {useNavigate} from "react-router";
-import {Dialog} from "@material-ui/core";
 
-const LogInWindow = ({addCustomers, logIn, logInVal}) => {
+const LogInWindow = ({logIn, logInVal}) => {
 
     const [open, setOpen] = useState(false);
 
@@ -56,7 +55,7 @@ const LogInWindow = ({addCustomers, logIn, logInVal}) => {
                 color: "white",
                 cursor: "pointer"
             }} icon={faCartShopping} onClick={() => {redirect("/cart")}}/> : ""}
-            <DialogWindow open={open} logIn={logIn} isLogged={logInVal} addCustomers={addCustomers} handleClose={handleToClose}/>
+            <DialogWindow open={open} logIn={logIn} isLogged={logInVal} handleClose={handleToClose}/>
         </div>
     );
 };

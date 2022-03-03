@@ -23,7 +23,7 @@ const ProductInBookmark = ({product, addToCart, removeFromBookmark}) => {
             <FontAwesomeIcon className="heart" style={{
 
             }} icon={faHeart} onClick={() => {
-                removeFromBookmark(product.id)
+                removeFromBookmark(product)
             }} />
             <img src={product.src} alt={product.name} width={150} height={150}/>
             <h3 style={{

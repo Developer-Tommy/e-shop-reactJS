@@ -46,7 +46,7 @@ const ProductInCart = ({product, removeFromCart ,addToBookmark}) => {
                 color: "white",
                 fontSize: "1rem"
             }} onClick={() => {
-                removeFromCart(product.id);
+                removeFromCart(product);
             }} >Remove</button>
         </div>
     );

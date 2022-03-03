@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
 import {useNavigate} from "react-router";
+import {UserContext} from "./Hooks/UserContext";
+import { Login } from "./Login";
 
+const Form = ({handleClose, logIn}) => {
 
-const Form = ({handleClose, addCustomer, logIn}) => {
-
+    const [id, setId] = useState(1);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isBackgroundGreen, setIsBackgroundGreen] = useState(false);
     const [passwordText, setPasswordText] = useState('');
-    const [customer, setCustomer] = useState({username: "user"});
+    const [userExist, setUserExist] = useState(false);
+
+    const { user, setUser } = useContext(UserContext);
 
     let history = useNavigate();
 
-    const handlePassword = (tmpPassword) => {
+    const handlePassword = (name, tmpPassword) => {
         let strongPassword = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
         if (strongPassword.test(tmpPassword)) {
             setIsBackgroundGreen(true)
@@ -27,25 +31,29 @@ const Form = ({handleClose, addCustomer, logIn}) => {
         }
 
         console.log(password)
+        handleLogInCustomers()
     }
 
     const handleSubmit = e => {
         e.preventDefault();
+        logIn(true);
         history("/cart");
         handleClose();
     };
 
     const handleLogInCustomers = () => {
-        console.log(username, password);
-        let updatedVal = {};
-        updatedVal = {username: {username}, password: {password}};
-        setCustomer(customer => ({
-            ...customer,
-            ...updatedVal
-        }));
-        console.log(customer);
-        addCustomer(customer);
-        logIn(true);
+        if (user.length > 0){
+            setId(user[user.length-1].id + 1)
+        }
+        checkUserExist()
+    }
+
+    const checkUserExist = (name, pass) => {
+        if (user.find(({ password }) => password === pass && user.find(({ username }) => username === name))){
+            console.log("user existuje")
+            setUserExist(true);
+            console.log(userExist);
+        }
     }
 
     return (
@@ -65,7 +73,10 @@ const Form = ({handleClose, addCustomer, logIn}) => {
                 variant="filled"
                 required
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={e => {
+                    setUsername(e.target.value)
+                    checkUserExist(e.target.value, password)
+                }}
             />
             <TextField style={{
                 margin: "10px 0 20px 0",
@@ -78,7 +89,8 @@ const Form = ({handleClose, addCustomer, logIn}) => {
                 value={password}
                 onChange={e => {
                     setPassword(e.target.value)
-                    handlePassword(e.target.value)
+                    handlePassword(username, e.target.value)
+                    checkUserExist(username, e.target.value)
                 }}
             />
             <span style={{
@@ -102,7 +114,13 @@ const Form = ({handleClose, addCustomer, logIn}) => {
                 }} variant="contained" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button onClick={handleLogInCustomers} style={{
+                <Button onClick={async () => {
+                    const newUser = await Login({id, username, password});
+                    setUser(prevUsers => [
+                        ...prevUsers, newUser
+                    ]);
+                    console.log(user)
+                }} style={{
                     margin: "20px",
                     backgroundColor: "black",
                     color: "white"

@@ -1,6 +1,5 @@
 import './App.css';
-import { useEffect, useState} from "react";
-import Product from "./Components/Product";
+import {useMemo, useState} from "react";
 import MenuBar from "./Components/MenuBar";
 import LogInWindow from "./Components/LogInWindow";
 import {BrowserRouter, Route} from "react-router-dom";
@@ -9,6 +8,9 @@ import ProfileButtons from "./Components/ProfileButtons";
 import useLocalStorage from "./Components/Hooks/useLocalStorage";
 import Cart from "./Components/Cart";
 import Bookmark from "./Components/Bookmark";
+import ProductList from "./Components/ProductList";
+import { UserContext } from "./Components/Hooks/UserContext";
+
 
 function App() {
 
@@ -16,9 +18,10 @@ function App() {
   const [cart, setCart] = useLocalStorage("cart",[]);
   const [bookmark, setBookmark] = useLocalStorage("bookmark", []);
   const [sort, setSort] = useState("");
-  const [data, setData] = useState([]);
-  const [customer, setCustomer] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("logInVal",false);
+
+  const [user, setUser] = useLocalStorage("users",[]);
+  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   const products = [
     {
@@ -84,6 +87,91 @@ function App() {
       quantity: 1,
       price: 420
     },
+    {
+      id: 10,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 11,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 12,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 13,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 14,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 15,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 16,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 17,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 18,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 19,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 20,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+    {
+      id: 21,
+      src: "https://cdn.alza.sk/ImgW.ashx?fd=f16&cd=SXI216b1",
+      name: "Xiaomi Redmi",
+      quantity: 1,
+      price: 420
+    },
+
   ]
 
   const addToCart = (product) => {
@@ -121,24 +209,17 @@ function App() {
     setSort(value);
   }
 
-  const addCustomer = (user) => {
-    const tmpCustomer = [...customer];
-    tmpCustomer.push(user);
-    console.log("pridany");
-    console.log(customer)
-    setCustomer(tmpCustomer);
-  }
-
   const removeProductFromCart = (product) => {
+    product.quantity = 1;
     const tmpCart = [...cart];
     console.log(product)
-    setCart(tmpCart.filter(({ id }) => id !== product));
+    setCart(tmpCart.filter(({ id }) => id !== product.id));
     console.log(cart)
   }
 
   const removeProductFromBookmarks = (product) => {
     const tmpBookmark = [...bookmark];
-    setBookmark(tmpBookmark.filter(({ id }) => id !== product));
+    setBookmark(tmpBookmark.filter(({ id }) => id !== product.id));
     console.log(bookmark)
   }
 
@@ -147,44 +228,21 @@ function App() {
     console.log(isLoggedIn);
   }
 
-  useEffect(() => {
-    const sortArray = type => {
-      const types = {
-        id: 'id',
-        name: 'name',
-        price: 'price',
-      };
-      const sortProperty = types[type];
-      let sorted;
-
-      if (sortProperty !== "name"){
-        sorted = [...products].sort((a, b) => a[sortProperty] - b[sortProperty]);
-      }
-      else {
-        sorted = [...products].sort((a, b) => a.name.localeCompare(b.name));
-      }
-      setData(sorted);
-    };
-    sortArray(sort);
-  }, [sort]);
-
   return (
     <div className="App">
       <BrowserRouter>
+        <UserContext.Provider value={value}>
         <Routes>
           <Route path="/" element={
             <div>
-              <LogInWindow logIn={handleLogIn} logInVal={isLoggedIn} addCustomers={addCustomer}/>
+              <LogInWindow logIn={handleLogIn} logInVal={isLoggedIn} />
               <MenuBar search={filtered} sorting={sorted}/>
-              <div className="products">
-                {data.filter(product => product.name.includes(filter)).map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}
-                {/*{data.map(item => <Product key={item.id} product={item} addProduct={addToCart} addBookmark={addToBookmark}/>)}*/}
-              </div>
+              <ProductList products={products} filter={filter} sort={sort} addProduct={addToCart} addBookmark={addToBookmark}/>
             </div>}>
           </Route>
           <Route path="/cart" element={
             <div>
-              <LogInWindow logIn={handleLogIn} logInVal={isLoggedIn} addCustomers={addCustomer}/>
+              <LogInWindow logIn={handleLogIn} logInVal={isLoggedIn} />
               <MenuBar search={filtered} sorting={sorted}/>
               <ProfileButtons/>
               <div className="products">
@@ -194,7 +252,7 @@ function App() {
           </Route>
           <Route path="/bookmark" element={
             <div>
-              <LogInWindow logIn={handleLogIn} logInVal={isLoggedIn} addCustomers={addCustomer}/>
+              <LogInWindow logIn={handleLogIn} logInVal={isLoggedIn} />
               <MenuBar search={filtered} sorting={sorted}/>
               <ProfileButtons/>
               <div className="products">
@@ -203,6 +261,7 @@ function App() {
             </div>}>
           </Route>
         </Routes>
+        </UserContext.Provider>
       </BrowserRouter>
 
     </div>
