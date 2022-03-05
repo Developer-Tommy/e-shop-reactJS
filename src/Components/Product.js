@@ -5,7 +5,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 const Product = ({product, addProduct, addBookmark}) => {
 
     return (
-        <div style={{
+        <div className="productItem" style={{
             display: "flex",
             flexDirection: "column",
             border: "1px solid black",
@@ -18,6 +18,7 @@ const Product = ({product, addProduct, addBookmark}) => {
             borderRadius: "2px",
             backgroundColor: "white",
             position: "relative"
+
         }}>
             <FontAwesomeIcon className="heart" style={{
 

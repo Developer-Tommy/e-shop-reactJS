@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import ProductInCart from "./ProductInCart";
 
-const Cart = ({cart, filter, sort,  removeProductFromCart,  addToBookmark}) => {
+
+const Cart = ({users, currentUser, filter, sort,  removeProductFromCart,  addToBookmark}) => {
 
     const [data, setData] = useState([]);
+    const cart = users.find(user => user.username === currentUser.username).cart;
 
     useEffect(() => {
         const sortArray = type => {
@@ -28,7 +30,24 @@ const Cart = ({cart, filter, sort,  removeProductFromCart,  addToBookmark}) => {
 
     return (
         <>
-            {data.filter(product => product.name.includes(filter)).map(item => <ProductInCart key={item.id} product={item} removeFromCart={removeProductFromCart} addToBookmark={addToBookmark}/>)}
+            {(users.find(user => user.username === currentUser.username).cart.length > 0) ? (data.filter(product => product.name.includes(filter)).map(item => <ProductInCart key={item.id} product={item} removeFromCart={removeProductFromCart} addToBookmark={addToBookmark}/>)) : (<h3>Your cart is empty!</h3>)}
+            {(users.find(user => user.username === currentUser.username).cart.length > 0) && (
+                <button style={{
+                    width: "15%",
+                    padding: "10px",
+                    display: "inline-block",
+                    borderRadius: "20px",
+                    cursor: "pointer",
+                    backgroundColor: "black",
+                    color: "white",
+                    fontSize: "1rem",
+                    position: "sticky",
+                    bottom: "20px",
+                    left: "100%",
+                    height: "10%"
+                }}
+                >Check-out</button>
+            )}
         </>
     );
 };

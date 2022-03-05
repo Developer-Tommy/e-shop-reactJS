@@ -1,18 +1,19 @@
 import React from 'react';
 import {useNavigate} from "react-router";
+import './StyleProduct.css';
 
 const ProfileButtons = () => {
 
     let history = useNavigate();
 
     return (
-        <div style={{
+        <div className="menu" style={{
             display: "flex",
             justifyContent: "flex-start",
             gap: "20px",
-            padding: "20px 0 0 45px"
+            padding: "20px 45px 0 45px",
         }}>
-            <button style={{
+            <button className="search cartBtn" style={{
                 width: "15%",
                 padding: "10px",
                 display: "inline-block",
@@ -24,7 +25,7 @@ const ProfileButtons = () => {
                     onClick={() => {
                 history("/cart");
             }}>Cart</button>
-            <button style={{
+            <button className="search cartBtn" style={{
                 width: "15%",
                 padding: "10px",
                 display: "inline-block",

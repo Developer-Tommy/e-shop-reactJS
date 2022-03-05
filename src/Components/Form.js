@@ -2,20 +2,32 @@ import React, {useContext, useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
 import {useNavigate} from "react-router";
 import {UserContext} from "./Hooks/UserContext";
+import {CurrentUserContext} from "./Hooks/CurrentUserContext";
 import { Login } from "./Login";
 
 const Form = ({handleClose, logIn}) => {
 
-    const [id, setId] = useState(1);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isBackgroundGreen, setIsBackgroundGreen] = useState(false);
     const [passwordText, setPasswordText] = useState('');
-    const [userExist, setUserExist] = useState(false);
+    const [emailValid, setEmailValid] = useState(false);
+    const [passwordValid, setPasswordValid] = useState(false);
 
-    const { user, setUser } = useContext(UserContext);
+
+    const { users, setUsers } = useContext(UserContext);
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
     let history = useNavigate();
+
+    const handleEmail = (name) => {
+        let correctEmail = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+        if (correctEmail.test(name)){
+            console.log("valid email")
+            setEmailValid(true)
+        }
+
+    }
 
     const handlePassword = (name, tmpPassword) => {
         let strongPassword = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})");
@@ -23,6 +35,7 @@ const Form = ({handleClose, logIn}) => {
             setIsBackgroundGreen(true)
             setPasswordText("Strong")
             console.log("strong")
+            setPasswordValid(true)
         }
         else {
             setIsBackgroundGreen(false)
@@ -31,28 +44,38 @@ const Form = ({handleClose, logIn}) => {
         }
 
         console.log(password)
-        handleLogInCustomers()
+
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        logIn(true);
-        history("/cart");
-        handleClose();
+        if (emailValid && passwordValid) {
+            checkUserExist()
+            logIn(true);
+            console.log(currentUser);
+            history("/cart");
+            handleClose();
+        }
+        else if (!emailValid && passwordValid){
+            history("/")
+            alert("Incorrect format of e-mail!")
+        }
+        else if (emailValid && !passwordValid){
+            history("/")
+            alert("Incorrect format of password!")
+        }
+        else {
+            history("/")
+            alert("Incorrect format of Login!")
+        }
+
     };
 
-    const handleLogInCustomers = () => {
-        if (user.length > 0){
-            setId(user[user.length-1].id + 1)
-        }
-        checkUserExist()
-    }
-
-    const checkUserExist = (name, pass) => {
-        if (user.find(({ password }) => password === pass && user.find(({ username }) => username === name))){
-            console.log("user existuje")
-            setUserExist(true);
-            console.log(userExist);
+    const checkUserExist = () => {
+        if (users.find(user => user.username !== currentUser.username) || users.length < 1) {
+            setUsers(prevUsers => [
+                ...prevUsers, currentUser
+            ]);
         }
     }
 
@@ -75,7 +98,7 @@ const Form = ({handleClose, logIn}) => {
                 value={username}
                 onChange={e => {
                     setUsername(e.target.value)
-                    checkUserExist(e.target.value, password)
+                    handleEmail(e.target.value)
                 }}
             />
             <TextField style={{
@@ -90,7 +113,7 @@ const Form = ({handleClose, logIn}) => {
                 onChange={e => {
                     setPassword(e.target.value)
                     handlePassword(username, e.target.value)
-                    checkUserExist(username, e.target.value)
+
                 }}
             />
             <span style={{
@@ -115,11 +138,10 @@ const Form = ({handleClose, logIn}) => {
                     Cancel
                 </Button>
                 <Button onClick={async () => {
-                    const newUser = await Login({id, username, password});
-                    setUser(prevUsers => [
-                        ...prevUsers, newUser
-                    ]);
-                    console.log(user)
+                    const newUser = await Login({username, password});
+                    console.log(users)
+                    console.log(newUser)
+                    setCurrentUser(newUser);
                 }} style={{
                     margin: "20px",
                     backgroundColor: "black",

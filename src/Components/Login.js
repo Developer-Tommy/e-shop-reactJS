@@ -1,7 +1,8 @@
-export const Login = async ({id,username, password}) => {
+export const Login = async ({username, password}) => {
     return {
-        id: id,
         username: username,
-        password: password
+        password: password,
+        cart: [],
+        bookmark: []
     };
 };

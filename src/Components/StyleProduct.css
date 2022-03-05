@@ -11,3 +11,45 @@
 .heart:hover {
     color: red;
 }
+
+@media only screen and (min-width: 656px){
+    .search {
+        display: flex;
+        flex-basis: 30%
+    }
+    .menu {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 0 45px;
+        gap: 50px;
+    }
+    .cartBtn {
+        display: flex;
+        flex-basis: 20%;
+    }
+}
+
+    @media only screen and (max-width: 655px) {
+    .productBox {
+        padding: 20px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .productItem {
+        width: 80%;
+    }
+    .search {
+        display: flex;
+        flex-basis: 45%;
+
+    }
+    .menu {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 0 45px;
+        gap: 20px;
+    }
+}

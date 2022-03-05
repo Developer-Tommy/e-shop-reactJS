@@ -1,12 +1,12 @@
 import './StyleProduct.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import './StyleProduct.css';
 
 const ProductInCart = ({product, removeFromCart ,addToBookmark}) => {
 
-
     return (
-        <div style={{
+        <div className="productItem" style={{
             display: "flex",
             flexDirection: "column",
             border: "1px solid black",

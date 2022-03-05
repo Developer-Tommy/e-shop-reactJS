@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import ProductInBookmark from "./ProductInBookmark";
 
-const Bookmark = ({ bookmark, filter, sort, addToCart, removeFromBookmark }) => {
+const Bookmark = ({users, currentUser, filter, sort, addToCart, removeFromBookmark }) => {
 
     const [book, setBook] = useState([]);
+    const bookmark = users.find(user => user.username === currentUser.username).bookmark;
+
 
     useEffect(() => {
         const sortArray = type => {
@@ -28,7 +30,7 @@ const Bookmark = ({ bookmark, filter, sort, addToCart, removeFromBookmark }) => 
 
     return (
         <>
-            {book.filter(product => product.name.includes(filter)).map(item => <ProductInBookmark key={item.id} product={item} addToCart={addToCart} removeFromBookmark={removeFromBookmark}/>)}
+            {(users.find(user => user.username === currentUser.username).bookmark.length > 0) ? (book.filter(product => product.name.includes(filter)).map(item => <ProductInBookmark key={item.id} product={item} addToCart={addToCart} removeFromBookmark={removeFromBookmark}/>)) : (<h3>Your bookmark is empty!</h3>)}
         </>
     );
 };

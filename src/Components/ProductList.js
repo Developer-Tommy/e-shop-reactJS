@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Product from "./Product";
 import InfiniteScroll from "react-infinite-scroll-component";
+import './StyleProduct.css';
 
 const ProductList = ({products, filter, sort, addProduct, addBookmark}) => {
 
     const [product, setProduct] = useState([]);
     const [page, setPage] = useState(6);
+
+
     //const [hasMore, setHasMore] = useState(true);
     //const { user } = useContext(UserContext);
 
@@ -64,7 +67,7 @@ const ProductList = ({products, filter, sort, addProduct, addBookmark}) => {
 
     return (
         <>
-            <InfiniteScroll style={{
+            <InfiniteScroll className="productBox" style={{
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: "center",

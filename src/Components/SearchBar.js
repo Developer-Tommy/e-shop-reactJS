@@ -1,11 +1,10 @@
 import React from 'react';
+import './StyleProduct.css';
+
 
 const SearchBar = ({searchBox}) => {
     return (
-        <div style={{
-            display: "flex",
-            flexBasis: "30%"
-        }}>
+        <div className="search">
             <input style={{
                 width: "100%",
                 padding: "10px",

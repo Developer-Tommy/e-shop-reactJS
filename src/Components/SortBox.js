@@ -1,11 +1,9 @@
 import React from 'react';
+import './StyleProduct.css';
 
 const SortBox = ({sortBox}) => {
     return (
-        <div style={{
-            display: "flex",
-            flexBasis: "30%"
-        }}>
+        <div className="search">
             <select style={{
                 width: "100%",
                 padding: "10px",

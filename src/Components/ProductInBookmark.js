@@ -1,11 +1,12 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
+import './StyleProduct.css';
 
 const ProductInBookmark = ({product, addToCart, removeFromBookmark}) => {
 
     return (
-        <div style={{
+        <div className="productItem" style={{
             display: "flex",
             flexDirection: "column",
             border: "1px solid black",
@@ -29,9 +30,6 @@ const ProductInBookmark = ({product, addToCart, removeFromBookmark}) => {
             <h3 style={{
                 marginBottom: "5px"
             }}>{product.name}</h3>
-            <p style={{
-                marginTop: "5px"
-            }}>{product.quantity+"ks"}</p>
             <p style={{
                 marginTop: "5px"
             }}>{product.price+"$"}</p>

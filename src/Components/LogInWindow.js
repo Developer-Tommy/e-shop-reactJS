@@ -26,15 +26,17 @@ const LogInWindow = ({logIn, logInVal}) => {
 
     return (
         <div style={{
+            display: "flex",
             position: "relative",
-            marginBottom: "20px"
+            marginBottom: "20px",
+            padding: "40px",
+            backgroundColor: "black"
         }}>
             <h1 style={{
                 margin: "0",
-                padding: "40px",
-                backgroundColor: "black",
                 color: "white",
-                cursor: "pointer"
+                cursor: "pointer",
+                flexBasis: "56%",
             }} onClick={() => {
                 redirect("/");
             }}>E-shop MobileShop</h1>
