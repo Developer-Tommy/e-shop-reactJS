@@ -30,7 +30,7 @@ const Cart = ({users, currentUser, filter, sort,  removeProductFromCart,  addToB
 
     return (
         <>
-            {(users.find(user => user.username === currentUser.username).cart.length > 0) ? (data.filter(product => product.name.includes(filter)).map(item => <ProductInCart key={item.id} product={item} removeFromCart={removeProductFromCart} addToBookmark={addToBookmark}/>)) : (<h3>Your cart is empty!</h3>)}
+            {(users.find(user => user.username === currentUser.username).cart.length > 0) ? (data.filter(product => product.name.toLowerCase().includes(filter.toLowerCase())).map(item => <ProductInCart key={item.id} product={item} removeFromCart={removeProductFromCart} addToBookmark={addToBookmark}/>)) : (<h3>Your cart is empty!</h3>)}
             {(users.find(user => user.username === currentUser.username).cart.length > 0) && (
                 <button style={{
                     width: "15%",

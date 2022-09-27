@@ -59,7 +59,7 @@ const ProductList = ({products, filter, sort, addProduct, addBookmark}) => {
                 gap: "20px",
                 padding: "20px"
             }}>
-                {product.filter(product => product.name.includes(filter)).map(item => <Product key={item.id} product={item} addProduct={addProduct} addBookmark={addBookmark}/>)}
+                {product.filter(product => product.name.toLowerCase().includes(filter.toLowerCase())).map(item => <Product key={item.id} product={item} addProduct={addProduct} addBookmark={addBookmark}/>)}
 
         </div>
     );
